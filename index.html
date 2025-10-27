@@ -846,22 +846,24 @@ del paciente y su firma digital</strong>
             
             // Preguntas con checkboxes
             doc.text(`✓ Fumó en la última hora: ${fumado === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += splitText2.length * 5 + 8;
+            yPos += 5;
             doc.text(`✓ Suspendió medicamentos: ${medicamentos === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += splitText2.length * 5 + 8;
+            yPos += 5;
             doc.text(`✓ Usó lápiz labial: ${labial === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += splitText2.length * 5 + 8;
+            yPos += 5;
             doc.text(`✓ Desayunó/comió: ${comida === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += splitText2.length * 5 + 8;
+            yPos += 5;
             
             // Inhaladores
+            doc.setFontSize(12);
+            doc.setTextColor(26, 82, 118);
             doc.text("Inhaladores suspendidos:", 20, yPos);
-            yPos += 6;
+            yPos += 10;
             
             if (inhaladoresSeleccionados.length > 0) {
                 inhaladoresSeleccionados.forEach(inhalador => {
                     doc.text(`✓ ${inhalador}`, 20, yPos);
-                    yPos += 5 + 8;
+                    yPos += 5;
                 });
             } else {
                 doc.text("Ninguno seleccionado", 25, yPos);
