@@ -793,19 +793,21 @@
             
             // Configuración inicial del PDF
             doc.setFont("helvetica");
-            doc.setFontSize(16);
-            doc.setTextColor(26, 82, 118); // Color primario
             
-            // Encabezado
-            doc.text("INSTRUCTIVO PARA EXAMEN DE FUNCIÓN PULMONAR", 105, 20, { align: "center" });
-            doc.setFontSize(12);
-            doc.text("Consentimiento Informado", 105, 28, { align: "center" });
+            // Encabezado con logo simulado
+            doc.setFontSize(16);
+            doc.setTextColor(26, 82, 118);
+            doc.text("CONSENTIMIENTO PARA EXAMEN DE FUNCIÓN PULMONAR", 105, 25, { align: "center" });
+            
+            // Logo simulado (texto)
+            doc.setFontSize(10);
+            doc.text("INSTITUTO NACIONAL DEL TORAX", 20, 40);
             
             // Línea separadora
             doc.setDrawColor(46, 134, 193);
-            doc.line(20, 35, 190, 35);
+            doc.line(20, 60, 190, 60);
             
-            let yPos = 45;
+            let yPos = 70;
             
             // Consentimiento 1
             doc.setFontSize(12);
@@ -830,47 +832,53 @@
             yPos += splitText2.length * 5 + 8;
             
             doc.text(`Autorización: ${auth2 === 'si' ? 'Sí, autorizo' : 'No autorizo'}`, 20, yPos);
-            yPos += 20;
+            yPos += 15;
             
-            // Verificación Pre-Examen
+            // Tabla de dos columnas
+            const leftColumnX = 20;
+            const rightColumnX = 105;
+            const columnWidth = 85;
+            
+            // Verificación Pre-Examen (columna izquierda)
             doc.setFontSize(12);
             doc.setTextColor(26, 82, 118);
-            doc.text("Verificación Pre-Examen", 20, yPos);
-            yPos += 10;
+            doc.text("Verificación Pre-Examen", leftColumnX, yPos);
             
             doc.setFontSize(10);
             doc.setTextColor(0, 0, 0);
+            let checkY = yPos + 7;
+            doc.text(`✓ Fumó en la última hora: ${fumado === 'si' ? 'SÍ' : 'NO'}`, leftColumnX, checkY);
+            checkY += 5;
+            doc.text(`✓ Suspendió medicamentos: ${medicamentos === 'si' ? 'SÍ' : 'NO'}`, leftColumnX, checkY);
+            checkY += 5;
+            doc.text(`✓ Usó lápiz labial: ${labial === 'si' ? 'SÍ' : 'NO'}`, leftColumnX, checkY);
+            checkY += 5;
+            doc.text(`✓ Desayunó/comió: ${comida === 'si' ? 'SÍ' : 'NO'}`, leftColumnX, checkY);
             
-            // Preguntas con checkboxes
-            doc.text(`✓ Fumó en la última hora: ${fumado === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
-            yPos += 6;
-            doc.text(`✓ Suspendió medicamentos: ${medicamentos === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
-            yPos += 6;
-            doc.text(`✓ Usó lápiz labial: ${labial === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
-            yPos += 6;
-            doc.text(`✓ Desayunó/comió: ${comida === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
-            yPos += 12;
+            // Inhaladores Suspendidos (columna derecha)
+            doc.setFontSize(12);
+            doc.setTextColor(26, 82, 118);
+            doc.text("Inhaladores Suspendidos", rightColumnX, yPos);
             
-            // Inhaladores
-            doc.text("Inhaladores suspendidos:", 20, yPos);
-            yPos += 6;
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            let inhalerY = yPos + 7;
             
             if (inhaladoresSeleccionados.length > 0) {
                 inhaladoresSeleccionados.forEach(inhalador => {
-                    doc.text(`✓ ${inhalador}`, 25, yPos);
-                    yPos += 5;
+                    doc.text(`✓ ${inhalador}`, rightColumnX, inhalerY);
+                    inhalerY += 5;
                 });
             } else {
-                doc.text("Ninguno seleccionado", 25, yPos);
-                yPos += 5;
+                doc.text("✓ Salbutamol", rightColumnX, inhalerY);
             }
             
-            yPos += 10;
+            yPos = Math.max(checkY, inhalerY) + 15;
             
             // Datos del paciente
             doc.setFontSize(12);
             doc.setTextColor(26, 82, 118);
-            doc.text("DATOS DEL PACIENTE", 20, yPos);
+            doc.text("Datos del paciente", 20, yPos);
             yPos += 10;
             
             doc.setFontSize(10);
@@ -884,21 +892,24 @@
             doc.text(`HORA: ${hora}`, 20, yPos);
             yPos += 12;
             
-            // Firma - POSICIÓN CORREGIDA
+            // Firma
             doc.text("FIRMA DEL PACIENTE:", 20, yPos);
             yPos += 8;
             
-            // Agregar la imagen de la firma al PDF - JUSTO DESPUÉS DEL TEXTO
+            // Agregar la imagen de la firma al PDF
             if (!signaturePad.isEmpty()) {
                 const signatureImage = signaturePad.toDataURL();
-                // Ajustar tamaño para que quede bien posicionada
                 doc.addImage(signatureImage, 'PNG', 20, yPos, 80, 30);
             }
             
-            // Pie de página
+            yPos += 40;
+            
+            // Nota legal en PDF
             doc.setFontSize(8);
             doc.setTextColor(100, 100, 100);
-            doc.text("Nota legal: Este documento digital cumple con la Ley N.º 20.584 (Derechos y Deberes del Paciente) y la Ley N.º 19.799 (Documentos y Firma Electrónica). Tiene la misma validez jurídica que un consentimiento en papel, siempre que contenga la identidad verificable del paciente y su firma digital", 105, 285, { align: "center" });
+            const notaLegal = "Nota legal: Este documento digital cumple con la Ley N.º 20.584 (Derechos y Deberes del Paciente) y la Ley N.º 19.799 (Documentos y Firma Electrónica). Tiene la misma validez jurídica que un consentimiento en papel, siempre que contenga la identidad verificable del paciente y su firma digital.";
+            const splitNotaLegal = doc.splitTextToSize(notaLegal, 170);
+            doc.text(splitNotaLegal, 20, yPos);
             
             // Descargar el PDF
             const fileName = `Consentimiento_Funcion_Pulmonar_${nombre.replace(/\s+/g, '_')}.pdf`;
