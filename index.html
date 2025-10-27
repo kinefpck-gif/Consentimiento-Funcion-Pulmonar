@@ -466,13 +466,13 @@
         <div class="medical-header">
             <div class="logo-container">
                 <img src="http://alfatecsistemas.es/wp-content/uploads/2014/01/minsal.jpg" alt="MINSAL" onerror="this.style.display='none'">
-                <img src="https://8aa2307755.cbaul-cdnwnd.com/50482e6f2d5a88477b133a4a4354649e/200000036-7c35f7c360/700/Logo%20INT.webp?ph=8aa2307755" alt="TORAX" onerror="this.style.display='none'">
+                <img src="http://www.lsilvaarquitecto.cl/assets/images/logo/torax.png" alt="TORAX" onerror="this.style.display='none'">
             </div>
             <div class="header-title">
                 <h1>INSTRUCTIVO PARA EXAMEN DE FUNCIÓN PULMONAR</h1>
                 <h2>Consentimiento Informado</h2>
             </div>
-            <div class="medical-badge">Laboratorio Fisiopatología</div>
+            <div class="medical-badge">DOCUMENTO OFICIAL</div>
         </div>
 
         <div class="form-container">
@@ -724,10 +724,7 @@
                 </div>
                 
                 <div class="footer-note">
-                    <strong>Nota legal:
-Este documento digital cumple con la Ley N.º 20.584 (Derechos y Deberes del Paciente) y la Ley N.º 19.799 (Documentos y
-Firma Electrónica). Tiene la misma validez jurídica que un consentimiento en papel, siempre que contenga la identidad verificable
-del paciente y su firma digital</strong>
+                    <strong>Si no puede asistir al examen, cancele su hora al teléfono 225754954. Secretaria Sra. Patricia García A. (llamar entre 14:30 y 16:00 horas)</strong>
                 </div>
             </form>
         </div>
@@ -800,9 +797,9 @@ del paciente y su firma digital</strong>
             doc.setTextColor(26, 82, 118); // Color primario
             
             // Encabezado
-            doc.text("CONSENTIMIENTO PARA EXAMEN DE FUNCIÓN PULMONAR", 105, 20, { align: "center" });
+            doc.text("INSTRUCTIVO PARA EXAMEN DE FUNCIÓN PULMONAR", 105, 20, { align: "center" });
             doc.setFontSize(12);
-            doc.text("Laboratorio Fisiopatología - Instituto Nacional Del Tórax", 105, 28, { align: "center" });
+            doc.text("Consentimiento Informado", 105, 28, { align: "center" });
             
             // Línea separadora
             doc.setDrawColor(46, 134, 193);
@@ -845,24 +842,22 @@ del paciente y su firma digital</strong>
             doc.setTextColor(0, 0, 0);
             
             // Preguntas con checkboxes
-            doc.text(`✓ Fumó en la última hora: ${fumado === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += 5;
-            doc.text(`✓ Suspendió medicamentos: ${medicamentos === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += 5;
-            doc.text(`✓ Usó lápiz labial: ${labial === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += 5;
-            doc.text(`✓ Desayunó/comió: ${comida === 'si' ? 'SÍ' : 'NO'}`, 20, yPos);
-            yPos += 5;
+            doc.text(`✓ Fumó en la última hora: ${fumado === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
+            yPos += 6;
+            doc.text(`✓ Suspendió medicamentos: ${medicamentos === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
+            yPos += 6;
+            doc.text(`✓ Usó lápiz labial: ${labial === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
+            yPos += 6;
+            doc.text(`✓ Desayunó/comió: ${comida === 'si' ? 'SÍ' : 'NO'}`, 25, yPos);
+            yPos += 12;
             
             // Inhaladores
-            doc.setFontSize(12);
-            doc.setTextColor(26, 82, 118);
             doc.text("Inhaladores suspendidos:", 20, yPos);
-            yPos += 10;
+            yPos += 6;
             
             if (inhaladoresSeleccionados.length > 0) {
                 inhaladoresSeleccionados.forEach(inhalador => {
-                    doc.text(`✓ ${inhalador}`, 20, yPos);
+                    doc.text(`✓ ${inhalador}`, 25, yPos);
                     yPos += 5;
                 });
             } else {
@@ -903,7 +898,7 @@ del paciente y su firma digital</strong>
             // Pie de página
             doc.setFontSize(8);
             doc.setTextColor(100, 100, 100);
-            doc.text("Nota legal: Este documento digital cumple con la Ley N.º 20.584 (Derechos y Deberes del Paciente) y la Ley N.º 19.799 (Documentos y Firma Electrónica). Tiene la misma validez jurídica que un consentimiento en papel, siempre que contenga la identidad verificable del paciente y su firma digital", 105, 285, { align: "center" });
+            doc.text("Si no puede asistir al examen, cancele su hora al teléfono 225754954. Secretaria Sra. Patricia García A. (llamar entre 14:30 y 16:00 horas)", 105, 285, { align: "center" });
             
             // Descargar el PDF
             const fileName = `Consentimiento_Funcion_Pulmonar_${nombre.replace(/\s+/g, '_')}.pdf`;
